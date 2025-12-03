@@ -1,6 +1,6 @@
 use std::io::{self, Write};
-#[path = "constant/data_ptkp.rs"]
-mod data_ptkp;
+// #[path = "constant/data_ptkp.rs"]
+// mod data_ptkp;
 
 #[path = "helper/get_tax_rate.rs"]
 mod get_tax_rate;
