@@ -2,6 +2,7 @@
 mod data_ptkp;
 use self::data_ptkp::DATA_PTKP;
 
+
 pub fn get_tax_cut(is_already_married: &bool, number_of_children: &u32) -> u128 {
     if !(*is_already_married) {
         return DATA_PTKP.tk;
