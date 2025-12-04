@@ -1,4 +1,4 @@
-pub fn get_tax_rate(salary_taxed: u128) -> u32 {
+pub fn get_tax_rate(salary_taxed: &u128) -> u32 {
     match salary_taxed {
         0..=60_000_000 => 5,
         60_000_001..=250_000_000 => 15,
