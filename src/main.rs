@@ -1,4 +1,4 @@
-use std::io::{self, Write};
+mod constant;
 
 #[path = "component/input_yes_no.rs"]
 mod input_yes_no;
