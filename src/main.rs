@@ -6,7 +6,7 @@ use crate::component::input_string::input_string;
 use crate::component::input_yes_no::input_yes_no;
 
 mod helper;
-use crate::helper::get_salary_taxed::get_salary_taxed;
+use helper::get_salary_taxed::get_salary_taxed;
 
 fn main() {
     let name: String = input_string("Enter your name: ");
