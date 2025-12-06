@@ -1,14 +1,12 @@
 mod constant;
 
 mod component;
-use crate::component::input_string::input_string;
 use crate::component::input_number::input_number;
+use crate::component::input_string::input_string;
 use crate::component::input_yes_no::input_yes_no;
-
 
 mod helper;
 use crate::helper::get_salary_taxed::get_salary_taxed;
-
 
 fn main() {
     let name: String = input_string("Enter your name: ");
@@ -20,11 +18,16 @@ fn main() {
         0
     };
 
-    let [salary_taxed, tax_to_pay] = get_salary_taxed( &salary_per_month, &is_already_married, &number_of_children);
+    let [salary_taxed, tax_to_pay] =
+        get_salary_taxed(&salary_per_month, &is_already_married, &number_of_children);
 
-    println!("\n\nName : {}\nSalary per month : Rp {}\nIs already married? : {}\nNumber of children : {}\n", name, salary_per_month, is_already_married, number_of_children);
-    
-    
-    println!("Tax to pay per year : Rp {}", if salary_taxed > 0 { tax_to_pay } else { 0 });
-    
+    println!(
+        "\n\nName : {}\nSalary per month : Rp {}\nIs already married? : {}\nNumber of children : {}\n",
+        name, salary_per_month, is_already_married, number_of_children
+    );
+
+    println!(
+        "Tax to pay per year : Rp {}",
+        if salary_taxed > 0 { tax_to_pay } else { 0 }
+    );
 }
