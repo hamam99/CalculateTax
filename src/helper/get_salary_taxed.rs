@@ -1,10 +1,5 @@
-#[path = "../helper/get_tax_rate.rs"]
-mod get_tax_rate;
-use self::get_tax_rate::get_tax_rate;
-
-#[path = "../helper/get_tax_cut.rs"]
-mod get_tax_cut;
-use self::get_tax_cut::get_tax_cut;
+use crate::helper::get_tax_rate::get_tax_rate;
+use crate::helper::get_tax_cut::get_tax_cut;
 
 pub fn get_salary_taxed(salary_per_month: &u32, is_already_married: &bool, number_of_children: &u32) -> [u128; 2] {
 
