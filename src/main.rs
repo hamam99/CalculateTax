@@ -19,7 +19,7 @@ fn sql_escape_string(value: &str) -> String {
 async fn main() -> std::io::Result<()> {
     let connection = sqlite::open(":memory:").unwrap();
 
-    let query = "CREATE TABLE IF NOT EXISTS salary (
+    let query = "CREATE TABLE IF NOT EXISTS TAX(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         salary_per_month INTEGER,
@@ -50,7 +50,7 @@ async fn hello() -> impl Responder {
 
 #[get("/tax")]
 async fn get_tax_all(db: web::Data<Arc<Mutex<Connection>>>) -> impl Responder {
-    let query = "SELECT * FROM salary";
+    let query = "SELECT * FROM TAX";
 
     let mut items: Vec<TaxRecord> = Vec::new();
     db.lock()
@@ -114,7 +114,7 @@ async fn insert_tax(
     let name = sql_escape_string(&item.name);
     let is_already_married = if item.is_already_married { 1 } else { 0 };
     let query = format!(
-        "INSERT INTO salary (name, salary_per_month, is_already_married, number_of_children, salary_taxed, tax_to_pay) VALUES ('{}', {}, {}, {}, {}, {})",
+        "INSERT INTO TAX(name, salary_per_month, is_already_married, number_of_children, salary_taxed, tax_to_pay) VALUES ('{}', {}, {}, {}, {}, {})",
         name,
         item.salary_per_month,
         is_already_married,
