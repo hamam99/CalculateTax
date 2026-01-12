@@ -34,7 +34,7 @@ async fn tax_insert(
     db.lock().unwrap().execute(query).unwrap();
 
     let obj = Response {
-        message: "Success".to_string(),
+        message: "Insertion success".to_string(),
     };
     HttpResponse::Ok().json(obj)
 }
