@@ -1,5 +1,3 @@
-pub mod create;
-pub mod delete;
-pub mod detail;
-pub mod get;
-pub mod update;
+pub mod hello;
+pub mod tax_get_all;
+pub mod tax_insert;
