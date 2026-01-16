@@ -13,6 +13,12 @@ async fn tax_insert(
     db: web::Data<Arc<Mutex<Connection>>>,
     item: web::Json<RequestData>,
 ) -> impl Responder {
+    if item.salary_per_month <= 0 {
+        return HttpResponse::BadRequest().json(Response {
+            message: "Salary per month must be greater than 0".to_string(),
+        });
+    }
+
     let [salary_taxed, tax_to_pay] = get_salary_taxed(
         &item.salary_per_month,
         &item.is_already_married,
@@ -31,12 +37,20 @@ async fn tax_insert(
         tax_to_pay
     );
 
-    db.lock().unwrap().execute(query).unwrap();
-
-    let obj = Response {
-        message: "Insertion success".to_string(),
+    let db_guard = match db.lock() {
+        Ok(guard) => guard,
+        Err(poisoned) => poisoned.into_inner(),
     };
-    HttpResponse::Ok().json(obj)
+    let result = db_guard.execute(query);
+
+    match result {
+        Ok(_) => HttpResponse::Ok().json(Response {
+            message: "Insertion success".to_string(),
+        }),
+        Err(e) => HttpResponse::InternalServerError().json(Response {
+            message: format!("Database error: {}", e),
+        }),
+    }
 }
 
 fn sql_escape_string(value: &str) -> String {

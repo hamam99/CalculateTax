@@ -10,12 +10,20 @@ pub async fn tax_delete(
     db: web::Data<Arc<Mutex<Connection>>>,
     id: web::Path<i64>,
 ) -> impl Responder {
-    let query = format!("DELETE FROM TAX WHERE id = {}", id);
-
-    db.lock().unwrap().execute(query).unwrap();
-
-    let obj = Response {
-        message: "Deletion success".to_string(),
+    let db_guard = match db.lock() {
+        Ok(guard) => guard,
+        Err(poisoned) => poisoned.into_inner(),
     };
-    HttpResponse::Ok().json(obj)
+
+    let query = format!("DELETE FROM TAX WHERE id = {}", id);
+    let result = db_guard.execute(query);
+
+    match result {
+        Ok(_) => HttpResponse::Ok().json(Response {
+            message: "Deletion success".to_string(),
+        }),
+        Err(e) => HttpResponse::InternalServerError().json(Response {
+            message: format!("Database error: {}", e),
+        }),
+    }
 }

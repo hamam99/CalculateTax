@@ -10,8 +10,12 @@ pub async fn tax_get_all(db: web::Data<Arc<Mutex<Connection>>>) -> impl Responde
     let query = "SELECT * FROM TAX";
 
     let mut items: Vec<TaxRecord> = Vec::new();
-    db.lock()
-        .unwrap()
+
+    let db_guard = match db.lock() {
+        Ok(guard) => guard,
+        Err(poisoned) => poisoned.into_inner(),
+    };
+    db_guard
         .iterate(query, |pairs| {
             let mut id: i64 = 0;
             let mut name = String::new();

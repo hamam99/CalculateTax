@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 use actix_web::{HttpResponse, Responder, get, web};
 use sqlite::Connection;
 
-use crate::model::tax_record::TaxRecord;
+use crate::model::{response::Response, tax_record::TaxRecord};
 
 #[get("/tax/{id}")]
 pub async fn tax_get_detail(
@@ -63,8 +63,13 @@ pub async fn tax_get_detail(
     match result {
         Ok(_) => match items {
             Some(item) => HttpResponse::Ok().json(item),
-            None => HttpResponse::NotFound().body(format!("Tax record with id {} not found", id)),
+            // None => HttpResponse::NotFound().body(format!("Tax record with id {} not found", id)),
+            None => HttpResponse::NotFound().json(Response {
+                message: format!("Tax record with id {} not found", id),
+            }),
         },
-        Err(e) => HttpResponse::InternalServerError().body(format!("Database error: {}", e)),
+        Err(e) => HttpResponse::InternalServerError().json(Response {
+            message: format!("Database error: {}", e),
+        }),
     }
 }
